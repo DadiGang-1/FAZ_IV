@@ -7,6 +7,9 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
 
+// Autre type pour créer les fichiers .ba2:
+import java.io.File;
+import java.nio.file.*;
 
 class Faz {
 
@@ -50,11 +53,13 @@ class Faz {
             while(fileScanner.hasNext()) {
                 String fileLine = fileScanner.nextLine();
                 
+                // Récupération du numéro de lot et du numéro de commande
                 if(fileLine.contains("LOT")) {
                     lot = Integer.parseInt(fileLine.split(";")[1]);
                     commande = fileLine.split(";")[3];
                 }
 
+                // Récupération du numéro de repère et de la quantité d'un repère
                 if(fileLine.contains("Rep")) {
                     inRepere = true;
                     inProfil = false;
@@ -65,6 +70,7 @@ class Faz {
                     continue;
                 }
                 
+                // Récupération du profil d'un repère
                 if(fileLine.contains("PROFIL")) {
                     inProfil = true;
                     inRepere = false;
@@ -78,6 +84,7 @@ class Faz {
                     continue;
                 }
                 
+                // Récupération des dimensions d'une case d'un repère
                 if(inRepere) {
                     int caseNumber = Integer.parseInt(fileLine.split(";")[0].trim());
                     String dimension = fileLine.split(";")[1].replace(" * ", "x").replace(",",".");
@@ -87,6 +94,7 @@ class Faz {
                     listeCaseRepere.put(idCRC, new CommandeRepereCase(repere, caseNumber, caseLargeur, caseHauteur, lot, commande, profil));
                 }
 
+                // Récupération de tous les détails d'un repère, toutes case confondue
                 if(inProfil) {
                     int OT = Integer.parseInt(fileLine.split(";")[1]);
                     String findLine = commande+"-"+repere+"-"+OT;
@@ -115,6 +123,9 @@ class Faz {
                         int designationEndIndex = jsonContent.indexOf(designationSearchEnd, designationStartIndex);
                         String designation = jsonContent.substring(designationStartIndex, designationEndIndex);
                         System.out.println(designation);
+
+
+
                         if (!checkEndLine.contains("}")) {
                             int endIndex = jsonContent.indexOf("]", coupeIndex);
                             String trouDeVisString = jsonContent.substring(coupeIndex, endIndex);
@@ -137,6 +148,23 @@ class Faz {
 
                 //System.out.println(fileLine);
             }
+
+            // TODO:
+            // Changer par java.nio.file pour créer le fichier .ba2
+
+            //File file = new File("../test/file.ba2");
+            //if(!file.exists()) {
+            //    String fileContent = "";
+            //    for (String cr : listeCaseRepere.keySet()) {
+            //        fileContent = CommandeRepereCase.writeToFile(listeCaseRepere.get(cr));
+            //    }
+            //    try {
+            //        file.createNewFile();
+            //        
+            //    } catch (IOException e) {
+            //        System.out.println("An error occurred while creating the file: " + e.getMessage());
+            //    }
+            //}
 
             try (FileWriter fileWriter = new FileWriter("../test/file.ba2")) {
                 PrintWriter printWriter = new PrintWriter(fileWriter);

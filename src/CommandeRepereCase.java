@@ -64,13 +64,19 @@ public class CommandeRepereCase extends Faz{
         // [1-4]
         sb.append(generateCAD(caseRepere));
         // [5]
-        sb.append(caseRepere.profil+","+caseRepere.profil+","+caseRepere.profil+","+caseRepere.profil+"\n");
+        // TODO: 
+        // Définir une règle pour savoi si c'est SX ou DX
+        // Comprendre le balise check de la notice graf
+        sb.append("\tSX ou DX\t"+caseRepere.largeur+"\t"+caseRepere.hauteur+"\t"+caseRepere.profil+","+caseRepere.profil+","+caseRepere.profil+","+caseRepere.profil+"\t\t\t"+caseRepere.caseNumber+"\t\t\t\t\t"+caseRepere.commande+"\t"+caseRepere.repereNumber+"\t\t\n");
         // [6-7]
-
+        // TODO:
+        // Comprendre ce qui faut mettre dans ces lignes
+        sb.append("position paumelles côté paumelles\nposition paumelles coté bas (si soufflet)\n");
         // [8-9]
-        sb.append("\n\n\n");
+        sb.append("0,0,0\n0,0,0\n");
         // [10-13]
-
+        // TODO:
+        // En attentes de réponse
         // [Detail:01-04]
         sb.append(writeDetails(caseRepere.detailsList));
 
@@ -92,6 +98,11 @@ public class CommandeRepereCase extends Faz{
         StringBuilder sb02 = new StringBuilder();
         StringBuilder sb03 = new StringBuilder();
         StringBuilder sb04 = new StringBuilder();
+
+
+        //TODO:
+        // Les éléments d'angle doivent être indiqués dans le groupe 02(B) ou 04(H) et jamais dans le groupe 01 ou 03.
+        // Si un côté ne nécessite pas de vis, il doit contenir au moins un élément avec toutes les valeurs à 0, exemple: 0,0,0,0
 
         for(Detail detail : detailsList) {
             switch (detail.position) {

@@ -2,20 +2,22 @@
 000001416601100002
 000001416601100003
 000001416601100004
-5050,5050,5050,5050
-
-
-
+	SX ou DX	525.0	1587.0	5050,5050,5050,5050			1					254166.201	1		
+position paumelles côté paumelles
+position paumelles coté bas (si soufflet)
+0,0,0
+0,0,0
 01	208956	M Verrou à bouton L=288mm	0,0.0,0
 
 000001416601200001
 000001416601200002
 000001416601200003
 000001416601200004
-5050,5050,5050,5050
-
-
-
+	SX ou DX	525.0	1587.0	5050,5050,5050,5050			2					254166.201	1		
+position paumelles côté paumelles
+position paumelles coté bas (si soufflet)
+0,0,0
+0,0,0
 01	222214	M Renvoi CT Mm 113 0G	0,113.5,0
 03	202209	M Cremone Mm OB F6.5 DF_500 L1236	0,1003.5,0
 03	201840	M Verrouillage Mm L_470 1G	0,470.0,0
@@ -26,19 +28,21 @@
 000001416602100002
 000001416602100003
 000001416602100004
-5050,5050,5050,5050
-
-
-
+	SX ou DX	527.5	987.0	5050,5050,5050,5050			1					254166.201	2		
+position paumelles côté paumelles
+position paumelles coté bas (si soufflet)
+0,0,0
+0,0,0
 
 000001416602200001
 000001416602200002
 000001416602200003
 000001416602200004
-5050,5050,5050,5050
-
-
-
+	SX ou DX	527.5	987.0	5050,5050,5050,5050			2					254166.201	2		
+position paumelles côté paumelles
+position paumelles coté bas (si soufflet)
+0,0,0
+0,0,0
 01	222214	M Renvoi CT Mm 113 0G	0,113.5,0
 01	201840	M Verrouillage Mm L_470 1G	0,470.0,0
 03	202207	M Cremone Mm OB F6.5 DF_300 L_736	0,638.5,0
