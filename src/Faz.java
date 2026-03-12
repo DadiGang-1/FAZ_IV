@@ -9,7 +9,8 @@ import java.io.IOException;
 
 // Autre type pour créer les fichiers .ba2:
 import java.io.File;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 class Faz {
 
@@ -139,7 +140,11 @@ class Faz {
                                     continue;
                                 }
                             }
+                            // TODO:
                             // Que faire si les quantités du détail est de plus de 1?
+                            // récupérer la quantité du détail
+                            // diviser la quantité du détail par la quantité de repère
+                            // ajouter le détail autant de fois que le résultat du calcul précédent
                             Detail detail = new Detail(position,code,coupe,trouDeVisList,designation);
                             crc.addDetails(detail);
                         }
