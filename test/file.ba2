@@ -19,6 +19,8 @@ position paumelles coté bas (si soufflet)
 0,0,0
 0,0,0
 01	222214	M Renvoi CT Mm 113 0G	0,113.5,0
+01	201752	M Verrouillage Mm L_705 1G	0,705.0,0
+02	222205	M Verrouillage Mm bas OB L181	0,181.0,0
 03	202209	M Cremone Mm OB F6.5 DF_500 L1236	0,1003.5,0
 03	201840	M Verrouillage Mm L_470 1G	0,470.0,0
 04	222201	M Renvoi d'angle Mm 113x113 1G CLASSIC	0,113.5,0
@@ -33,6 +35,7 @@ position paumelles côté paumelles
 position paumelles coté bas (si soufflet)
 0,0,0
 0,0,0
+01	SI-299623	Si Verrou à levier L=95mm	0,0.0,0
 
 000001416602200001
 000001416602200002
@@ -45,6 +48,7 @@ position paumelles coté bas (si soufflet)
 0,0,0
 01	222214	M Renvoi CT Mm 113 0G	0,113.5,0
 01	201840	M Verrouillage Mm L_470 1G	0,470.0,0
+02	222205	M Verrouillage Mm bas OB L181	0,181.0,0
 03	202207	M Cremone Mm OB F6.5 DF_300 L_736	0,638.5,0
 03	201750	M Rallonge crémone Mm L_235 1G	0,235.0,0
 04	222201	M Renvoi d'angle Mm 113x113 1G CLASSIC	0,113.5,0

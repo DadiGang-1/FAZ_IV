@@ -37,20 +37,6 @@ class Faz {
             FileReader fileReader = new FileReader(path);
             Scanner fileScanner = new Scanner(fileReader);
 
-            String jsonContent = "";
-
-            try {
-                FileReader jsonFileReader = new FileReader("C:\\Users\\david\\OneDrive - ALU PVC CREATION\\Bureau\\LOT_FAZ_IV\\Code\\FAZ_IV\\src\\ferrureList.json");
-                Scanner jsonScanner = new Scanner(jsonFileReader);
-                
-                while (jsonScanner.hasNext()) {
-                    jsonContent += jsonScanner.nextLine();
-                }
-                jsonScanner.close();
-            } catch (FileNotFoundException e) {
-                System.out.println("JSON file not found: " + e.getMessage());
-            }
-
             while(fileScanner.hasNext()) {
                 String fileLine = fileScanner.nextLine();
                 
@@ -103,52 +89,42 @@ class Faz {
 
                     char position = fileLine.split(";")[3].charAt(0);
                     String code = fileLine.split(";")[5];
+                    String codeFerrureEnum = "_"+code.replace("-", "_");
+                    int quantiteCode = Integer.parseInt(fileLine.split(";")[7]);
+                    quantiteCode /= quantite; // TODO: Add exception div by 0;
                     Double coupe = Double.parseDouble(fileLine.split(";")[9].replace(",", "."));
-                    
-                    boolean codeExists = false;
 
-                    // Vérifier si le code existe dans le json
-                    String codeSearch = "\"code\":\"" + code + "\"";
-                    String coupeSearch = "\"trouDeVis\":[";
-                    codeExists = jsonContent.contains(codeSearch);
-                    
-                    if (codeExists) {
-                        int codeIndex = jsonContent.indexOf(codeSearch) + codeSearch.length();
-                        int coupeIndex = jsonContent.indexOf(coupeSearch, codeIndex) + coupeSearch.length();
-                        String checkEndLine = jsonContent.substring(codeIndex, coupeIndex);
-
-                        // recuperer la designation
-                        String designationSearchStart = "\"designation\":\"";
-                        String designationSearchEnd = "\"";
-                        int designationStartIndex = jsonContent.indexOf(designationSearchStart,codeIndex) + designationSearchStart.length();
-                        int designationEndIndex = jsonContent.indexOf(designationSearchEnd, designationStartIndex);
-                        String designation = jsonContent.substring(designationStartIndex, designationEndIndex);
-                        System.out.println(designation);
-
-
-
-                        if (!checkEndLine.contains("}")) {
-                            int endIndex = jsonContent.indexOf("]", coupeIndex);
-                            String trouDeVisString = jsonContent.substring(coupeIndex, endIndex);
-                            ArrayList<Double> trouDeVisList = new ArrayList<>();
-                            
-                            for (int i = 0; i < trouDeVisString.split(",").length; i++) {
-                                Double trouDeVisValue = Double.parseDouble(trouDeVisString.split(",")[i].replace(" ", ""));
-                                if (trouDeVisValue < coupe || coupe <= 0.0){
-                                    trouDeVisList.add(trouDeVisValue);
-                                } else {
-                                    continue;
+                    // codeExists
+                    try {
+                        Ferrure ferrure = Ferrure.valueOf(codeFerrureEnum);
+                        
+                        String designation = ferrure.getDesignation();
+                        ArrayList<Double> trouDeVisList = new ArrayList<>();
+                        if (ferrure.getType() == TypeFerrure.RAB || ferrure.getType() == TypeFerrure.RAH) {
+                            // garder toutes les côtes de la liste
+                            for(Double trouDeVis : ferrure.getTrouDeVis()) {
+                                trouDeVisList.add(trouDeVis);
+                            }
+                        } else {
+                            // retirer les côté supérieur à la coupe
+                            for(Double trouDeVis : ferrure.getTrouDeVis()) {
+                                if (trouDeVis < coupe || coupe <= 0.0) {
+                                    trouDeVisList.add(trouDeVis);
                                 }
                             }
-                            // TODO:
-                            // Que faire si les quantités du détail est de plus de 1?
-                            // récupérer la quantité du détail
-                            // diviser la quantité du détail par la quantité de repère
-                            // ajouter le détail autant de fois que le résultat du calcul précédent
+                        }
+
+                        for(int i = 0; i < quantiteCode;i++){
+                            // ajouter le detail
                             Detail detail = new Detail(position,code,coupe,trouDeVisList,designation);
                             crc.addDetails(detail);
                         }
+
+                        
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
                     }
+
                 }
 
                 //System.out.println(fileLine);
