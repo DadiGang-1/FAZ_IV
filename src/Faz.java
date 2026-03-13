@@ -77,8 +77,15 @@ class Faz {
                     String dimension = fileLine.split(";")[1].replace(" * ", "x").replace(",",".");
                     double caseLargeur = Double.parseDouble(dimension.split("x")[0]);
                     double caseHauteur = Double.parseDouble(dimension.split("x")[1]);
+                    double caseHauteurPoignee = 0.0;
+                    try {
+                        caseHauteurPoignee = Double.parseDouble(fileLine.split(";")[2].replace(",","."));
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    
                     idCRC = commande+"-"+repere+"-"+caseNumber;
-                    listeCaseRepere.put(idCRC, new CommandeRepereCase(repere, caseNumber, caseLargeur, caseHauteur, lot, commande, profil));
+                    listeCaseRepere.put(idCRC, new CommandeRepereCase(repere, caseNumber, caseLargeur, caseHauteur, caseHauteurPoignee, lot, commande, profil));
                 }
 
                 // Récupération de tous les détails d'un repère, toutes case confondue
@@ -99,6 +106,7 @@ class Faz {
                         Ferrure ferrure = Ferrure.valueOf(codeFerrureEnum);
                         
                         String designation = ferrure.getDesignation();
+                        TypeFerrure typeFerrure = ferrure.getType();
                         ArrayList<Double> trouDeVisList = new ArrayList<>();
                         if (ferrure.getType() == TypeFerrure.RAB || ferrure.getType() == TypeFerrure.RAH) {
                             // garder toutes les côtes de la liste
@@ -116,7 +124,7 @@ class Faz {
 
                         for(int i = 0; i < quantiteCode;i++){
                             // ajouter le detail
-                            Detail detail = new Detail(position,code,coupe,trouDeVisList,designation);
+                            Detail detail = new Detail(position,code,coupe,trouDeVisList,designation,typeFerrure);
                             crc.addDetails(detail);
                         }
 

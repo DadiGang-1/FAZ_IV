@@ -5,17 +5,19 @@ public class CommandeRepereCase extends Faz{
     int repereNumber;
     double largeur;
     double hauteur;
+    double hauteurPoignee;
     int lot;
     String commande;
     String profil;
     
     ArrayList<Detail> detailsList = new ArrayList<>();
 
-    public CommandeRepereCase(int repereNumber, int caseNumber, double largeur, double hauteur, int lot, String commande, String profil) {
+    public CommandeRepereCase(int repereNumber, int caseNumber, double largeur, double hauteur, double hauteurPoignee, int lot, String commande, String profil) {
         this.repereNumber = repereNumber;
         this.caseNumber = caseNumber;
         this.largeur = largeur;
         this.hauteur = hauteur;
+        this.hauteurPoignee = hauteurPoignee;
         this.lot = lot;
         this.commande = commande;
         this.profil = profil;
@@ -100,11 +102,30 @@ public class CommandeRepereCase extends Faz{
         StringBuilder sb04 = new StringBuilder();
 
 
-        //TODO:
+        // TODO:
         // Les éléments d'angle doivent être indiqués dans le groupe 02(B) ou 04(H) et jamais dans le groupe 01 ou 03.
         // Si un côté ne nécessite pas de vis, il doit contenir au moins un élément avec toutes les valeurs à 0, exemple: 0,0,0,0
 
+        // TODO:
+        // si ferrure avec une coupe à 0.0 que faire ?
+
+        // TODO:
+        // Tous les RAB doivent être désigner en bas
+        // Tous les RAH doivent être désigner en haut
+
+        // TODO:
+        // Repèrer tous les éléments avec un type crémone 
+        // Cela deviendre le côté crémone 03
+        // Ainsi le côté opposé devient le côté paumelle
+
+        
         for(Detail detail : detailsList) {
+            if (detail.typeFerrure == TypeFerrure.CREMONE) {
+                System.out.println("CREMONE FINDED");
+            }
+            if (detail.typeFerrure == TypeFerrure.RAB || detail.typeFerrure == TypeFerrure.RAH) {
+                System.out.println("RENVOI ANGLE FINDED");
+            }
             switch (detail.position) {
                 case 'D' :
                     sb01.append("01\t"+detail.code+"\t"+detail.designation+"\t"+"0,"+detail.coupe+",0\n");

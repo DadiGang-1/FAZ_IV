@@ -52,6 +52,11 @@ public enum Ferrure {
     _222214("222214","M Renvoi CT Mm 113 0G",new double[]{106.5,121.5},TypeFerrure.RAH),
     _225092("225092","M Prolongateur ST Inverseur",new double[]{28,119},TypeFerrure.STB),
     _206630("206630","Rallonge 140 mm sans galet",new double[]{},TypeFerrure.RALLONGE),
+    _208323("208323","M Cremone Mm Soufflet F6.5 L500",new double[]{70,180},TypeFerrure.CREMONE_SOUFFLET),
+    _208324("208324","M Cremone Mm Soufflet F6.5 L700",new double[]{70,230,300},TypeFerrure.CREMONE_SOUFFLET),
+    _208325("208325","M Cremone Mm Soufflet F6.5 L1000",new double[]{70,330,420},TypeFerrure.CREMONE_SOUFFLET),
+    _208326("208326","M Cremone Mm Soufflet F6.5 L1400",new double[]{70,270,480,560,640},TypeFerrure.CREMONE_SOUFFLET),
+    _208327("208327","M Cremone Mm Soufflet F6.5 L1800",new double[]{70,280,480,680,760,840},TypeFerrure.CREMONE_SOUFFLET),
 
     // Les références suivantes doivent être vérifiées, les trous de vis sont à confirmer
     _203699("203699","M Rallonge recoup BTV Mm L_997 1G",new double[]{},TypeFerrure.RALLONGE),
@@ -64,11 +69,6 @@ public enum Ferrure {
     _201752("201752","M Verrouillage Mm L_705 1G",new double[]{},TypeFerrure.RALLONGE),
     _202488("202488","M Verrou à levier haut L=450mm 0G",new double[]{},TypeFerrure.VERROU),
     _205934("205934","M Compas add Mm: Tetiere LFF>1200 Ob inversé",new double[]{},TypeFerrure.RALLONGE),
-    _208323("208323","M Cremone Mm Soufflet F6.5 L500",new double[]{},TypeFerrure.CREMONE),
-    _208324("208324","M Cremone Mm Soufflet F6.5 L700",new double[]{},TypeFerrure.CREMONE),
-    _208325("208325","M Cremone Mm Soufflet F6.5 L1000",new double[]{},TypeFerrure.CREMONE),
-    _208326("208326","M Cremone Mm Soufflet F6.5 L1400",new double[]{},TypeFerrure.CREMONE),
-    _208327("208327","M Cremone Mm Soufflet F6.5 L1800",new double[]{},TypeFerrure.CREMONE),
     _209303("209303","M Entrebailleur OF avec guide",new double[]{},TypeFerrure.RAB),
     _209656("209656","M Renvoi d'angle Mm 113x  5 Tringle",new double[]{},TypeFerrure.RAH),
     _222205("222205","M Verrouillage Mm bas OB L181",new double[]{},TypeFerrure.RAB),
@@ -106,8 +106,4 @@ public enum Ferrure {
     public TypeFerrure getType() {
         return type;
     }
-}
-
-enum TypeFerrure {
-    RAB, RAH, RALLONGE, CREMONE, SERRURE, VERROU, COMPAS, STB
 }
