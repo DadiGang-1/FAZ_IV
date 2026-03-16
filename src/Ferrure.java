@@ -86,8 +86,9 @@ public enum Ferrure {
     private String designation;
     private double[] trouDeVis;
     private TypeFerrure type;
+    //private double dimensionFerrure;
 
-    Ferrure(String code, String designation, double[] trouDeVis, TypeFerrure type) {
+    Ferrure(String code, String designation, double[] trouDeVis, TypeFerrure type){//, double dimensionFerrure) {
         this.code = code;
         this.designation = designation;
         this.trouDeVis = trouDeVis;

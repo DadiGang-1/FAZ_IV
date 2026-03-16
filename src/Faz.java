@@ -108,19 +108,47 @@ class Faz {
                         String designation = ferrure.getDesignation();
                         TypeFerrure typeFerrure = ferrure.getType();
                         ArrayList<Double> trouDeVisList = new ArrayList<>();
-                        if (ferrure.getType() == TypeFerrure.RAB || ferrure.getType() == TypeFerrure.RAH) {
-                            // garder toutes les côtes de la liste
-                            for(Double trouDeVis : ferrure.getTrouDeVis()) {
+
+                        // TODO:
+                        // Pour Crémone, Rallonge, Compas
+                        // ajouter une vis à -8mm si coupe inférieur à la dernière valeur de la liste des trou de vis
+                        // retirer la condition RAB et RAH
+                        // pour STB ajouter un trou a +8mm
+                        for(Double trouDeVis : ferrure.getTrouDeVis()) {
+                            if (trouDeVis < coupe || coupe <= 0.0) {
                                 trouDeVisList.add(trouDeVis);
-                            }
-                        } else {
-                            // retirer les côté supérieur à la coupe
-                            for(Double trouDeVis : ferrure.getTrouDeVis()) {
-                                if (trouDeVis < coupe || coupe <= 0.0) {
-                                    trouDeVisList.add(trouDeVis);
+                            } else {
+                                if(ferrure.getType() != TypeFerrure.RAB && ferrure.getType() != TypeFerrure.RAH) {
+                                    if(ferrure.getType() != TypeFerrure.STB) {
+                                        Double newHole = coupe - 8.0;
+                                        trouDeVisList.add(newHole);
+                                    } else {
+                                        Double newHole = coupe + 8.0;
+                                        trouDeVisList.add(newHole);
+                                    }
+                                    break;
                                 }
                             }
                         }
+
+                        //if (ferrure.getType() == TypeFerrure.RAB || ferrure.getType() == TypeFerrure.RAH) {
+                        //    // garder toutes les côtes de la liste
+                        //    for(Double trouDeVis : ferrure.getTrouDeVis()) {
+                        //        trouDeVisList.add(trouDeVis);
+                        //    }
+                        //} else {
+                        //    // retirer les côté supérieur à la coupe et ajouter un nouvel élément a +8mm
+                        //    for(Double trouDeVis : ferrure.getTrouDeVis()) {
+                        //        if (trouDeVis < coupe || coupe <= 0.0) {
+                        //            trouDeVisList.add(trouDeVis);
+                        //        } else {
+                        //            if(ferrure.getType() != TypeFerrure.RAB && ferrure.getType() != TypeFerrure.RAH) {
+                        //                trouDeVisList.add(trouDeVis+8);
+                        //                break;
+                        //            }
+                        //        }
+                        //    }
+                        //}
 
                         for(int i = 0; i < quantiteCode;i++){
                             // ajouter le detail
