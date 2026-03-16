@@ -128,12 +128,6 @@ public class CommandeRepereCase extends Faz{
         
 
         for(Detail detail : detailsList) {
-            if (detail.typeFerrure == TypeFerrure.CREMONE) {
-                System.out.println("CREMONE FINDED");
-            }
-            if (detail.typeFerrure == TypeFerrure.RAB || detail.typeFerrure == TypeFerrure.RAH) {
-                System.out.println("RENVOI ANGLE FINDED");
-            }
             switch (detail.position) {
                 case 'D' :
                     sb01.append("01\t"+detail.code+"\t"+detail.designation+"\t"+"0,"+detail.coupe+",0\n");
@@ -179,6 +173,10 @@ public class CommandeRepereCase extends Faz{
         // details, DX, 01, 500.0
 
         LinkedList<Double> holeList = new LinkedList<>();
+
+        // TODO:
+        // gérer les éléments d'angle, cote inversé
+        // mettre tous les angles en 02 ou 04 
 
         //  Ordre d'installation côté crémone
         //      RAB > CREMONE > RALLONGE > RAH
@@ -372,7 +370,9 @@ public class CommandeRepereCase extends Faz{
 
 
 
-
+        if(holeLine == ""){
+            holeLine = "0,0,0,0\t";
+        }
 
         return holeLine;
     }
