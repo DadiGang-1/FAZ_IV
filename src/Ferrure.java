@@ -71,7 +71,7 @@ public enum Ferrure {
     _205934("205934","M Compas add Mm: Tetiere LFF>1200 Ob inversé",new double[]{},TypeFerrure.RALLONGE),
     _209303("209303","M Entrebailleur OF avec guide",new double[]{},TypeFerrure.RAB),
     _209656("209656","M Renvoi d'angle Mm 113x  5 Tringle",new double[]{},TypeFerrure.RAH),
-    _222205("222205","M Verrouillage Mm bas OB L181",new double[]{},TypeFerrure.RAB),
+    _222205("222205","M Verrouillage Mm bas OB L181",new double[]{106.5,121.5},TypeFerrure.RAB),
     _222215("222215","M Verrouillage Mm bas OB L181 Ob inversé ouv D",new double[]{},TypeFerrure.RAB),
     _2701925("2701925","M Renvoi d'angle Mm 140x140 1G",new double[]{},TypeFerrure.RAH),
     _2701902("2701902","Rallonge INFIT sortie de tringle",new double[]{},TypeFerrure.RALLONGE),

@@ -27,7 +27,6 @@ public class CommandeRepereCase extends Faz{
     public void setProfil(String profil) {
         this.profil = profil;
     }
-
     public void addDetails(Detail detail) {
         detailsList.add(detail);
     }
@@ -73,31 +72,20 @@ public class CommandeRepereCase extends Faz{
         // [6-7]
         // TODO:
         // Comprendre ce qui faut mettre dans ces lignes
-        sb.append("position paumelles côté paumelles\nposition paumelles coté bas (si soufflet)\n");
+        sb.append("position paumelles côté paumelles\n");
+        sb.append("position paumelles coté bas (si soufflet)\n");
         // [8-9]
         sb.append("0,0,0\n0,0,0\n");
         // [10-13]
         // TODO:
         // En attentes de réponse
-        sb.append(getList(caseRepere.detailsList, openingType, "01", caseRepere.hauteur)+"\n"); // paumelle
-        sb.append(getList(caseRepere.detailsList, openingType, "02", caseRepere.largeur)+"\n");
-        sb.append(getList(caseRepere.detailsList, openingType, "03", caseRepere.hauteur)+"\n"); // crémone
-        sb.append(getList(caseRepere.detailsList, openingType, "04", caseRepere.largeur)+"\n");
+        sb.append(getList(caseRepere.detailsList, openingType, "01", caseRepere.hauteur)+"\n"); // PAUMELLE
+        sb.append(getList(caseRepere.detailsList, openingType, "02", caseRepere.largeur)+"\n"); // [B]
+        sb.append(getList(caseRepere.detailsList, openingType, "03", caseRepere.hauteur)+"\n"); // CREMONE
+        sb.append(getList(caseRepere.detailsList, openingType, "04", caseRepere.largeur)+"\n"); // [H]
 
-        //sb.append("position vis cote paumelle\n");
-        //sb.append("position vis cote bas\n");
-        //sb.append("position vis cote cremone\n");
-        //sb.append("position vis cote haut\n");
         // [Detail:01-04]
         sb.append(writeDetails(caseRepere.detailsList));
-
-        //sb.append("Profil: "+caseRepere.profil+" Repere: "+caseRepere.repereNumber+" Case: "+caseRepere.caseNumber+" Largeur: "+caseRepere.largeur+" Hauteur: "+caseRepere.hauteur+" Lot: "+caseRepere.lot+" Commande: "+caseRepere.commande+"\n");
-        //for (Detail detail : caseRepere.detailsList) {
-        //    sb.append("Position: "+detail.position+" Code: "+detail.code+" Coupe: "+detail.coupe+"\n");
-        //    for(Double trouDeVis : detail.trouDeVisList) {
-        //        sb.append("Trou de vis: "+trouDeVis+"\n");
-        //    }
-        //}
 
         return sb.toString();
     }
@@ -172,8 +160,6 @@ public class CommandeRepereCase extends Faz{
     public static String getList(ArrayList<Detail> detailsList, String openingType, String side, Double Length) {
         // details, DX, 01, 500.0
 
-        LinkedList<Double> holeList = new LinkedList<>();
-
         // TODO:
         // gérer les éléments d'angle, cote inversé
         // mettre tous les angles en 02 ou 04 
@@ -189,191 +175,276 @@ public class CommandeRepereCase extends Faz{
         //
         //  Ordre d'installation côté bas
         //      RAB
-        Double actualLength = 0.0;
+
+
+        // y'a-t-il un RAB ?
+        // si oui commence par ça 
+        // y'a-t-il un RAH ?
+
+        // TODO: 
+        // Récupérer tous les éléments côté D
+        // Si les RAB/RAH sont déclarer sur D alors ajouter les côtes
+        // Sinon ajouter les côtes 222214 uiquement
 
         switch (openingType) {
             case "DX":
-                
                 switch (side) {
-                    case "01": // paumelle + G
-
-                    // TODO: 
-                    // Récupérer tous les éléments côté D
-                    // Si les RAB/RAH sont déclarer sur D alors ajouter les côtes
-                    // Sinon ajouter les côtes 222214 uiquement
-
-                        for (Detail detail : detailsList) {
-                            //System.out.println(detail.typeFerrure);
-
-                            if(detail.position == 'G') {
-                                Double dimTrouDeVis = 0.0;;
-                                for (Double trouDeVis : detail.trouDeVisList) {
-                                    dimTrouDeVis = actualLength + trouDeVis;
-                                    holeList.add(dimTrouDeVis);
-                                    System.out.println("DIM G: "+dimTrouDeVis);
-                                }
-                                actualLength = dimTrouDeVis;
-                            }
-
-                            //Boolean isCorner = (detail.typeFerrure == TypeFerrure.RAB || detail.typeFerrure == TypeFerrure.RAH) ? true : false;
-                            //if(isCorner && detail.position != 'D') {
-                            //}
-                            //if(detail.typeFerrure == TypeFerrure.RAB || detail.typeFerrure == TypeFerrure.RAH) {
-                            //    if(detail.position != 'G') {
-                            //    }
-                            //}
-                            //if(detail.position == 'G') {
-                            //}
-                        }
-                        break;
-                    case "02": // bas + B
-                        for (Detail detail : detailsList) {
-                            if(detail.position == 'B') {
-                                Double dimTrouDeVis = 0.0;;
-                                for (Double trouDeVis : detail.trouDeVisList) {
-                                    dimTrouDeVis = actualLength + trouDeVis;
-                                    holeList.add(dimTrouDeVis);
-                                    System.out.println("DIM B : "+dimTrouDeVis);
-                                }
-                                actualLength = dimTrouDeVis;
-                            }
-                        }
-                        break;
-                    case "03": // cremone + D
-                        for (Detail detail : detailsList) {
-                            if(detail.position == 'D') {
-                                Double dimTrouDeVis = 0.0;;
-                                for (Double trouDeVis : detail.trouDeVisList) {
-                                    dimTrouDeVis = actualLength + trouDeVis;
-                                    holeList.add(dimTrouDeVis);
-                                    System.out.println("DIM D : "+dimTrouDeVis);
-                                }
-                                actualLength = dimTrouDeVis;
-                            }
-                        }
-                        break;
-                    case "04": // haut + H
-                        for (Detail detail : detailsList) {
-                            if(detail.position == 'H') {
-                                Double dimTrouDeVis = 0.0;;
-                                for (Double trouDeVis : detail.trouDeVisList) {
-                                    dimTrouDeVis = actualLength + trouDeVis;
-                                    holeList.add(dimTrouDeVis);
-                                    System.out.println("DIM H : "+dimTrouDeVis);
-                                }
-                                actualLength = dimTrouDeVis;
-                            }
-                        }
-                        break;
+                    case "01": // [G] PAUMELLE
+                        return getListDX01(detailsList,Length);
+                    case "02": // [B]
+                        return getListDX02(detailsList,Length);
+                    case "03": // [D] CREMONE
+                        return getListDX03(detailsList,Length);
+                    case "04": // [H]
+                        return getListDX04(detailsList,Length);
                     default:
                         break;
                 }
-
                 break;
+
             case "SX":
-                
                 switch (side) {
-                    case "01": // paumelle + D
-                        for (Detail detail : detailsList) {
-                            if(detail.position == 'D') {
-                                Double dimTrouDeVis = 0.0;;
-                                for (Double trouDeVis : detail.trouDeVisList) {
-                                    dimTrouDeVis = actualLength + trouDeVis;
-                                    holeList.add(dimTrouDeVis);
-                                    System.out.println("DIM D : "+dimTrouDeVis);
-                                }
-                                actualLength = dimTrouDeVis;
-                            }
-                        }
-                        break;
-                    case "02": // bas + B
-                        for (Detail detail : detailsList) {
-                            if(detail.position == 'B') {
-                                Double dimTrouDeVis = 0.0;;
-                                for (Double trouDeVis : detail.trouDeVisList) {
-                                    dimTrouDeVis = actualLength + trouDeVis;
-                                    holeList.add(dimTrouDeVis);
-                                    System.out.println("DIM B : "+dimTrouDeVis);
-                                }
-                                actualLength = dimTrouDeVis;
-                            }
-                        }
-                        break;
-                    case "03": // cremone + G
-                        for (Detail detail : detailsList) {
-                            if(detail.position == 'G') {
-                                Double dimTrouDeVis = 0.0;;
-                                for (Double trouDeVis : detail.trouDeVisList) {
-                                    dimTrouDeVis = actualLength + trouDeVis;
-                                    holeList.add(dimTrouDeVis);
-                                    System.out.println("DIM G : "+dimTrouDeVis);
-                                }
-                                actualLength = dimTrouDeVis;
-                            }
-                        }
-                        break;
-                    case "04": // haut + H
-                        for (Detail detail : detailsList) {
-                            if(detail.position == 'H') {
-                                Double dimTrouDeVis = 0.0;;
-                                for (Double trouDeVis : detail.trouDeVisList) {
-                                    dimTrouDeVis = actualLength + trouDeVis;
-                                    holeList.add(dimTrouDeVis);
-                                    System.out.println("DIM H : "+dimTrouDeVis);
-                                }
-                                actualLength = dimTrouDeVis;
-                            }
-                        }
-                        break;
+                    case "01": // [D] PAUMELLE
+                        return getListSX01(detailsList,Length);
+                    case "02": // [B]
+                        return getListSX02(detailsList,Length);
+                    case "03": // [G] CREMONE
+                        return getListSX03(detailsList,Length);
+                    case "04": // [H]
+                        return getListSX04(detailsList,Length);
                     default:
                         break;
                 }
-
                 break;
+
             case "AX":
-                
                 break;
             case "BX":
-                
                 break;
             default:
                 break;
         }
+        return null;
+    }
 
+    public static String getListDX01(ArrayList<Detail> detailsList, Double Length) {
+        LinkedList<Double> holeList = new LinkedList<>();
+        Double actualLength = 0.0;
+        for (Detail detail : detailsList) {
+            Double dimTrouDeVis = 0.0;
+
+            if(detail.position == 'G') {
+                for (Double trouDeVis : detail.trouDeVisList) {
+                    dimTrouDeVis = actualLength + trouDeVis;
+                    holeList.add(dimTrouDeVis);
+                    System.out.println("DIM G "+detail.typeFerrure+" : "+dimTrouDeVis);
+                }
+                actualLength = dimTrouDeVis;
+            }
+        }
+        return holeListToString(holeList);
+    }
+    public static String getListDX02(ArrayList<Detail> detailsList, Double Length) {
+        LinkedList<Double> holeList = new LinkedList<>();
+        Double actualLength = 0.0;
+        for (Detail detail : detailsList) {
+            Double dimTrouDeVis = 0.0;
+            if(detail.position == 'B' || detail.typeFerrure == TypeFerrure.RAB) {
+                for (Double trouDeVis : detail.trouDeVisList) {
+                    dimTrouDeVis = actualLength + trouDeVis;
+                    holeList.add(dimTrouDeVis);
+                    System.out.println("DIM B "+detail.typeFerrure+" : "+dimTrouDeVis);
+                }
+                actualLength = dimTrouDeVis;
+            }
+        }
+        return holeListToString(holeList);
+    }
+    public static String getListDX03(ArrayList<Detail> detailsList, Double Length) {
+        LinkedList<Double> holeList = new LinkedList<>();
+        Double actualLength = 0.0;
+        for (Detail detail : detailsList) {
+            Double dimTrouDeVis = 0.0;
+            switch (detail.typeFerrure) {
+                case TypeFerrure.RAH:
+                    if(!detail.code.equals("222214")) {
+                        for (Double trouDeVis : detail.trouDeVisList) {
+                            dimTrouDeVis = Length - trouDeVis;
+                            holeList.add(dimTrouDeVis);
+                            System.out.println("DIM D OPP "+detail.typeFerrure+" : "+dimTrouDeVis);
+                        }
+                    }
+                    break;
+                default:
+                    if(detail.typeFerrure == TypeFerrure.RAB || detail.position == 'D') {
+                        for (Double trouDeVis : detail.trouDeVisList) {
+                            dimTrouDeVis = actualLength + trouDeVis;
+                            holeList.add(dimTrouDeVis);
+                            System.out.println("DIM D "+detail.typeFerrure+" : "+dimTrouDeVis);
+                        }
+                        actualLength = dimTrouDeVis;
+                    }
+                    break;
+            }
+        }
+        return holeListToString(holeList);
+    }
+    public static String getListDX04(ArrayList<Detail> detailsList, Double Length) {
+        LinkedList<Double> holeList = new LinkedList<>();
+        Double actualLength = 0.0;
+        for (Detail detail : detailsList) {
+            Double dimTrouDeVis = 0.0;
+            switch (detail.typeFerrure) {
+                case TypeFerrure.RAH:
+                    if(!detail.code.equals("222214")) {
+                        for (Double trouDeVis : detail.trouDeVisList) {
+                            dimTrouDeVis = Length - trouDeVis;
+                            holeList.add(dimTrouDeVis);
+                            System.out.println("DIM H OPP "+detail.typeFerrure+" : "+dimTrouDeVis);
+                        }
+                    } else {
+                        for (Double trouDeVis : detail.trouDeVisList) {
+                            dimTrouDeVis = actualLength + trouDeVis;
+                            holeList.add(dimTrouDeVis);
+                            System.out.println("DIM H "+detail.typeFerrure+" : "+dimTrouDeVis);
+                        }
+                        actualLength = dimTrouDeVis;
+                    }
+                    break;
+                default:
+                    if(detail.position == 'H') {
+                        for (Double trouDeVis : detail.trouDeVisList) {
+                            dimTrouDeVis = actualLength + trouDeVis;
+                            holeList.add(dimTrouDeVis);
+                            System.out.println("DIM H "+detail.typeFerrure+" : "+dimTrouDeVis);
+                        }
+                        actualLength = dimTrouDeVis;
+                    }
+                    break;
+            }
+        }
+        return holeListToString(holeList);
+    }
+
+    public static String getListSX01(ArrayList<Detail> detailsList, Double Length) {
+        LinkedList<Double> holeList = new LinkedList<>();
+        Double actualLength = 0.0;
+        for (Detail detail : detailsList) {
+            Double dimTrouDeVis = 0.0;
+
+            if(detail.position == 'D') {
+                for (Double trouDeVis : detail.trouDeVisList) {
+                    dimTrouDeVis = actualLength + trouDeVis;
+                    holeList.add(dimTrouDeVis);
+                    System.out.println("SX DIM D "+detail.typeFerrure+" : "+dimTrouDeVis);
+                }
+                actualLength = dimTrouDeVis;
+            }
+        }
+        return holeListToStringReversed(holeList,Length);
+    }
+    public static String getListSX02(ArrayList<Detail> detailsList, Double Length) {
+        LinkedList<Double> holeList = new LinkedList<>();
+        Double actualLength = 0.0;
+        for (Detail detail : detailsList) {
+            Double dimTrouDeVis = 0.0;
+            if(detail.position == 'B' || detail.typeFerrure == TypeFerrure.RAB) {
+                for (Double trouDeVis : detail.trouDeVisList) {
+                    dimTrouDeVis = actualLength + trouDeVis;
+                    holeList.add(dimTrouDeVis);
+                    System.out.println("SX DIM B "+detail.typeFerrure+" : "+dimTrouDeVis);
+                }
+                actualLength = dimTrouDeVis;
+            }
+        }
+        return holeListToStringReversed(holeList,Length);
+    }
+    public static String getListSX03(ArrayList<Detail> detailsList, Double Length) {
+        LinkedList<Double> holeList = new LinkedList<>();
+        Double actualLength = 0.0;
+        for (Detail detail : detailsList) {
+            Double dimTrouDeVis = 0.0;
+            switch (detail.typeFerrure) {
+                case TypeFerrure.RAH:
+                    if(!detail.code.equals("222214")) {
+                        for (Double trouDeVis : detail.trouDeVisList) {
+                            dimTrouDeVis = Length - trouDeVis;
+                            holeList.add(dimTrouDeVis);
+                            System.out.println("SX DIM G OPP "+detail.typeFerrure+" : "+dimTrouDeVis);
+                        }
+                    }
+                    break;
+                default:
+                    if(detail.typeFerrure == TypeFerrure.RAB || detail.position == 'G') {
+                        for (Double trouDeVis : detail.trouDeVisList) {
+                            dimTrouDeVis = actualLength + trouDeVis;
+                            holeList.add(dimTrouDeVis);
+                            System.out.println("SX DIM G "+detail.typeFerrure+" : "+dimTrouDeVis);
+                        }
+                        actualLength = dimTrouDeVis;
+                    }
+                    break;
+            }
+        }
+        return holeListToStringReversed(holeList,Length);
+    }
+    public static String getListSX04(ArrayList<Detail> detailsList, Double Length) {
+        LinkedList<Double> holeList = new LinkedList<>();
+        Double actualLength = 0.0;
+        for (Detail detail : detailsList) {
+            Double dimTrouDeVis = 0.0;
+            switch (detail.typeFerrure) {
+                case TypeFerrure.RAH:
+                    if(detail.code.equals("222214")) {
+                        for (Double trouDeVis : detail.trouDeVisList) {
+                            dimTrouDeVis = Length - trouDeVis;
+                            holeList.add(dimTrouDeVis);
+                            System.out.println("SX DIM H OPP "+detail.typeFerrure+" : "+dimTrouDeVis);
+                        }
+                    } else {
+                        for (Double trouDeVis : detail.trouDeVisList) {
+                            dimTrouDeVis = actualLength + trouDeVis;
+                            holeList.add(dimTrouDeVis);
+                            System.out.println("SX DIM H "+detail.typeFerrure+" : "+dimTrouDeVis);
+                        }
+                        actualLength = dimTrouDeVis;
+                    }
+                    break;
+                default:
+                    if(detail.position == 'H') {
+                        for (Double trouDeVis : detail.trouDeVisList) {
+                            dimTrouDeVis = actualLength + trouDeVis;
+                            holeList.add(dimTrouDeVis);
+                            System.out.println("SX DIM H "+detail.typeFerrure+" : "+dimTrouDeVis);
+                        }
+                        actualLength = dimTrouDeVis;
+                    }
+                    break;
+            }
+        }
+        //holeList.order
+        return holeListToStringReversed(holeList,Length);
+    }
+
+    public static String holeListToString(LinkedList<Double> holeList){
         String holeLine = "";
         for (Double hole : holeList) {
             holeLine += hole+",1,1,1\t";
         }
-
-
-        //for (Detail detail : detailsList) {       
-        //    if(detail.typeFerrure == TypeFerrure.RAB) {
-        //        botHoleList.add(null);
-        //        rightHoleList.add(null);
-        //    }
-        //    if(detail.typeFerrure == TypeFerrure.RAH) {
-        //        topHoleList.add(null);
-        //        if(detail.code == "222214") {
-        //            leftHoleList.add(null);
-        //        } else {
-        //            rightHoleList.add(null);
-        //        }
-        //    }
-        //    //System.out.println(detail.trouDeVisList);
-        //    if(detail.position == 'D') {
-        //    } else if(detail.position == 'B') {
-        //    } else if(detail.position == 'G') {
-        //    } else if(detail.position == 'H') {
-        //    }
-        //}
-        
-
-
-
         if(holeLine == ""){
             holeLine = "0,0,0,0\t";
         }
-
+        return holeLine;
+    }
+    public static String holeListToStringReversed(LinkedList<Double> holeList,Double Length){
+        String holeLine = "";
+        for (Double hole : holeList) {
+            Double newHole = Length - hole;
+            holeLine += newHole+",1,1,1\t";
+        }
+        if(holeLine == ""){
+            holeLine = "0,0,0,0\t";
+        }
         return holeLine;
     }
 }

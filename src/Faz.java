@@ -111,12 +111,21 @@ class Faz {
 
                         // TODO:
                         // Pour Crémone, Rallonge, Compas
-                        // ajouter une vis à -8mm si coupe inférieur à la dernière valeur de la liste des trou de vis
-                        // retirer la condition RAB et RAH
-                        // pour STB ajouter un trou a +8mm
+                        // ajouter un trou de vis à -8mm si coupe inférieur à la dernière valeur de la liste des trou de vis
+                        // pour STB ajouter un trou a +8mm -> a faire dans la DB
+
+                        // TODO:
+                        // ajouter le condition VERROU SERRURE CREMONE_SOUFFLET
+                        // IL NE SE RECOUPE PAS 
+                        // PAS D'ASSEMBLAGE QUI SUIT
+
+                        // En attente de consigne !
                         for(Double trouDeVis : ferrure.getTrouDeVis()) {
                             if (trouDeVis < coupe || coupe <= 0.0) {
-                                trouDeVisList.add(trouDeVis);
+                                trouDeVisList.add(trouDeVis); 
+                                // STB -> coupe = 0.0 mais je doit ajouter un trou à [taille + 8.0mm]
+                                // TODO: 
+                                // ajouter le trou de vis dans la base de données
                             } else {
                                 if(ferrure.getType() != TypeFerrure.RAB && ferrure.getType() != TypeFerrure.RAH) {
                                     if(ferrure.getType() != TypeFerrure.STB) {
@@ -187,7 +196,7 @@ class Faz {
                 PrintWriter printWriter = new PrintWriter(fileWriter);
                 for (String cr : listeCaseRepere.keySet()) {
                     //System.out.println(CommandeRepereCase.generateCAD(listeCaseRepere.get(cr)));
-                    CommandeRepereCase.toString(listeCaseRepere.get(cr));
+                    //CommandeRepereCase.toString(listeCaseRepere.get(cr));
                     printWriter.println(CommandeRepereCase.writeToFile(listeCaseRepere.get(cr)));
                 }
                 printWriter.close();
