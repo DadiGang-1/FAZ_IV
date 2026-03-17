@@ -47,6 +47,7 @@ public class CommandeRepereCase extends Faz{
         cad += lotString.concat(commandeString).concat(repereString).concat(chassis).concat("00002\n");
         cad += lotString.concat(commandeString).concat(repereString).concat(chassis).concat("00003\n");
         cad += lotString.concat(commandeString).concat(repereString).concat(chassis).concat("00004\n");
+
         return cad;
     }
 
@@ -134,6 +135,8 @@ public class CommandeRepereCase extends Faz{
 
         // Ajouter vérification pour inverser sb01 et sb03
         sb.append(sb01.toString()+sb02.toString()+sb03.toString()+sb04.toString());
+
+        sb.deleteCharAt(sb.toString().length() - 1);
         return sb.toString();
     }
 
@@ -332,7 +335,7 @@ public class CommandeRepereCase extends Faz{
         for (Detail detail : detailsList) {
             Double dimTrouDeVis = 0.0;
 
-            if(detail.position == 'D') {
+            if(detail.position == 'D' || detail.code.equals("222214")) {
                 for (Double trouDeVis : detail.trouDeVisList) {
                     dimTrouDeVis = actualLength + trouDeVis;
                     holeList.add(dimTrouDeVis);
