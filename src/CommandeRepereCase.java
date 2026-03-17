@@ -427,6 +427,7 @@ public class CommandeRepereCase extends Faz{
     }
 
     public static String holeListToString(LinkedList<Double> holeList){
+        holeList.sort(null);
         String holeLine = "";
         for (Double hole : holeList) {
             holeLine += hole+",1,1,1\t";
@@ -437,6 +438,7 @@ public class CommandeRepereCase extends Faz{
         return holeLine;
     }
     public static String holeListToStringReversed(LinkedList<Double> holeList,Double Length){
+        holeList.sort(null);
         String holeLine = "";
         for (Double hole : holeList) {
             Double newHole = Length - hole;

@@ -98,9 +98,11 @@ class Faz {
                     String code = fileLine.split(";")[5];
                     String codeFerrureEnum = "_"+code.replace("-", "_");
                     int quantiteCode = Integer.parseInt(fileLine.split(";")[7]);
-                    quantiteCode /= quantite; // TODO: Add exception div by 0;
+                    if (quantite != 0) quantiteCode /= quantite;
                     Double coupe = Double.parseDouble(fileLine.split(";")[9].replace(",", "."));
-
+                    
+                    // exception on file generation
+                    if(code.equals("222214"))position = 'H';
                     // codeExists
                     try {
                         Ferrure ferrure = Ferrure.valueOf(codeFerrureEnum);
