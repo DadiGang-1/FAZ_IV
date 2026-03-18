@@ -14,25 +14,61 @@ class Faz {
     private static String commande = "";
     private static String paths = "C:\\Users\\david\\OneDrive - ALU PVC CREATION\\Bureau\\LOT_FAZ_IV\\Source\\";
     private static String currentFile = "C:\\Users\\david\\OneDrive - ALU PVC CREATION\\Bureau\\LOT_FAZ_IV\\Data\\currentFile.txt";
-   
+    private static int currentLot = 0;
 
-	public static void main(String[] args) {
-
-        //try (Scanner fileScanner = new Scanner(FileReader fileReader = new FileReader(currentFile));){
-        //}
-
-		Scanner scanner = new Scanner(System.in);
-        HashMap<String, CommandeRepereCase> listeCaseRepere = new HashMap<>();
-
-        File file = new File(paths);
-        String fileNames[] = file.list();
-        if (fileNames.length == 0) {
-            System.out.println("The directory is empty!");
+    public static int getCurrentLot(String currentFile) {
+        int lotFind = 0;
+        File file = new File(currentFile);
+        if (!file.exists()) {
+            String parentDirStr = file.getParent();
+            File parentDir = new File(parentDirStr);
+            if (!parentDir.exists()) {
+                boolean created = parentDir.mkdirs();
+                if (!created) {
+                    System.out.println("The parent directory could not be created");
+                }
+            }
+            
+            try {
+                file.createNewFile();
+                System.out.println("File successfully created!");
+            } catch (IOException ioe) {
+                System.out.println("Unable to create file. " + ioe.getMessage());
+            }
         } else {
-            for (int i = 0; i < fileNames.length; i++) {
-                System.out.println(fileNames[i]);
+            try {
+                Scanner fileScanner = new Scanner(new FileReader(currentFile));
+                lotFind = Integer.parseInt(fileScanner.nextLine());
+                fileScanner.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
+        return lotFind;
+    }
+	public static void main(String[] args) {
+
+        currentLot = getCurrentLot(currentFile);
+        
+		Scanner scanner = new Scanner(System.in);
+        HashMap<String, CommandeRepereCase> listeCaseRepere = new HashMap<>();
+        
+        //getFileNames()
+        ArrayList<String> fileNames = new ArrayList<>();
+
+        File file = new File(paths);
+        String AllFileNames[] = file.list();
+        if (AllFileNames.length == 0) {
+            System.out.println("The directory is empty!");
+        } else {
+            for (int i = 0; i < AllFileNames.length; i++) {
+                System.out.println(AllFileNames[i]);
+                if(Integer.parseInt(AllFileNames[i].split(".")[0]) > currentLot) {
+                    fileNames.add(AllFileNames[i]);
+                }
+            }
+        }
+
 
         try {
             String profil = "";
