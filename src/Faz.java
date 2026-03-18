@@ -7,20 +7,14 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
 
-// Autre type pour créer les fichiers .ba2:
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
 class Faz {
 
     private static int lot = 0;
     private static String commande = "";
 
-    
 	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
 
+		Scanner scanner = new Scanner(System.in);
         HashMap<String, CommandeRepereCase> listeCaseRepere = new HashMap<>();
 
         try {
@@ -29,11 +23,9 @@ class Faz {
             int quantite = 0;
             boolean inRepere = false;
             boolean inProfil = false;
-            String path = "C:\\Users\\david\\OneDrive - ALU PVC CREATION\\Bureau\\LOT_FAZ_IV\\Source\\254166.csv";
+
+            String path = "C:\\Users\\david\\OneDrive - ALU PVC CREATION\\Bureau\\LOT_FAZ_IV\\Source\\254210.csv";
             String idCRC = "";
-            System.out.println("Entre file path:");
-            //String filePath = scanner.nextLine();
-            //FileReader fileReader = new FileReader(filePath);
             FileReader fileReader = new FileReader(path);
             Scanner fileScanner = new Scanner(fileReader);
 
@@ -44,6 +36,8 @@ class Faz {
                 if(fileLine.contains("LOT")) {
                     lot = Integer.parseInt(fileLine.split(";")[1]);
                     commande = fileLine.split(";")[3];
+                    inRepere = false;
+                    inProfil = false;
                 }
 
                 // Récupération du numéro de repère et de la quantité d'un repère
@@ -112,22 +106,25 @@ class Faz {
                         ArrayList<Double> trouDeVisList = new ArrayList<>();
 
                         // TODO:
-                        // Pour Crémone, Rallonge, Compas
-                        // ajouter un trou de vis à -8mm si coupe inférieur à la dernière valeur de la liste des trou de vis
-                        // pour STB ajouter un trou a +8mm -> a faire dans la DB
+                        // CREMONE, RALLONGE, COMPAS
+                        // Ajouter un trou de vis à -8mm si coupe inférieur à la dernière valeur de la liste des trou de vis
 
                         // TODO:
-                        // ajouter le condition VERROU SERRURE CREMONE_SOUFFLET
-                        // IL NE SE RECOUPE PAS 
-                        // PAS D'ASSEMBLAGE QUI SUIT
+                        // pour STB ajouter un trou a +8.0mm -> a faire dans la DB [taille + 8.0mm]
+                        // pour STB retirer les 2 premiers trou de vis de la crémone [coupe = 0.0]
+
+                        // TODO:
+                        // Ajouter les conditions VERROU SERRURE CREMONE_SOUFFLET
+                        // PAS DE COUPE
+                        // PAS D'ASSEMBLAGE
 
                         // En attente de consigne !
+                        // TODO:
+                        // Vérifier si la coupe n'est pas entre la dernière vis 
+                        // Peut importe la coupe, si le trou de vis = coupe - 8 mm alors pas de réel coupe.
                         for(Double trouDeVis : ferrure.getTrouDeVis()) {
                             if (trouDeVis < coupe || coupe <= 0.0) {
-                                trouDeVisList.add(trouDeVis); 
-                                // STB -> coupe = 0.0 mais je doit ajouter un trou à [taille + 8.0mm]
-                                // TODO: 
-                                // ajouter le trou de vis dans la base de données
+                                trouDeVisList.add(trouDeVis);
                             } else {
                                 if(ferrure.getType() != TypeFerrure.RAB && ferrure.getType() != TypeFerrure.RAH) {
                                     if(ferrure.getType() != TypeFerrure.STB) {
@@ -142,59 +139,23 @@ class Faz {
                             }
                         }
 
-                        //if (ferrure.getType() == TypeFerrure.RAB || ferrure.getType() == TypeFerrure.RAH) {
-                        //    // garder toutes les côtes de la liste
-                        //    for(Double trouDeVis : ferrure.getTrouDeVis()) {
-                        //        trouDeVisList.add(trouDeVis);
-                        //    }
-                        //} else {
-                        //    // retirer les côté supérieur à la coupe et ajouter un nouvel élément a +8mm
-                        //    for(Double trouDeVis : ferrure.getTrouDeVis()) {
-                        //        if (trouDeVis < coupe || coupe <= 0.0) {
-                        //            trouDeVisList.add(trouDeVis);
-                        //        } else {
-                        //            if(ferrure.getType() != TypeFerrure.RAB && ferrure.getType() != TypeFerrure.RAH) {
-                        //                trouDeVisList.add(trouDeVis+8);
-                        //                break;
-                        //            }
-                        //        }
-                        //    }
-                        //}
-
+                        // ajouter le detail
                         for(int i = 0; i < quantiteCode;i++){
-                            // ajouter le detail
                             Detail detail = new Detail(position,code,coupe,trouDeVisList,designation,typeFerrure);
                             crc.addDetails(detail);
                         }
 
-                        
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
-
                 }
-
                 //System.out.println(fileLine);
             }
 
             // TODO:
             // Changer par java.nio.file pour créer le fichier .ba2
 
-            //File file = new File("../test/file.ba2");
-            //if(!file.exists()) {
-            //    String fileContent = "";
-            //    for (String cr : listeCaseRepere.keySet()) {
-            //        fileContent = CommandeRepereCase.writeToFile(listeCaseRepere.get(cr));
-            //    }
-            //    try {
-            //        file.createNewFile();
-            //        
-            //    } catch (IOException e) {
-            //        System.out.println("An error occurred while creating the file: " + e.getMessage());
-            //    }
-            //}
-
-            try (FileWriter fileWriter = new FileWriter("../test/file.ba2")) {
+            try (FileWriter fileWriter = new FileWriter("../test/"+lot+".ba2")) {
                 PrintWriter printWriter = new PrintWriter(fileWriter);
                 for (String cr : listeCaseRepere.keySet()) {
                     //System.out.println(CommandeRepereCase.generateCAD(listeCaseRepere.get(cr)));
