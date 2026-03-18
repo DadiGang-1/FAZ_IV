@@ -7,15 +7,32 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
 
+import java.io.File;
 class Faz {
 
     private static int lot = 0;
     private static String commande = "";
+    private static String paths = "C:\\Users\\david\\OneDrive - ALU PVC CREATION\\Bureau\\LOT_FAZ_IV\\Source\\";
+    private static String currentFile = "C:\\Users\\david\\OneDrive - ALU PVC CREATION\\Bureau\\LOT_FAZ_IV\\Data\\currentFile.txt";
+   
 
 	public static void main(String[] args) {
 
+        //try (Scanner fileScanner = new Scanner(FileReader fileReader = new FileReader(currentFile));){
+        //}
+
 		Scanner scanner = new Scanner(System.in);
         HashMap<String, CommandeRepereCase> listeCaseRepere = new HashMap<>();
+
+        File file = new File(paths);
+        String fileNames[] = file.list();
+        if (fileNames.length == 0) {
+            System.out.println("The directory is empty!");
+        } else {
+            for (int i = 0; i < fileNames.length; i++) {
+                System.out.println(fileNames[i]);
+            }
+        }
 
         try {
             String profil = "";
@@ -26,6 +43,9 @@ class Faz {
 
             String path = "C:\\Users\\david\\OneDrive - ALU PVC CREATION\\Bureau\\LOT_FAZ_IV\\Source\\254210.csv";
             String idCRC = "";
+            //System.out.println("Entre file path:");
+            //String filePath = scanner.nextLine();
+            //FileReader fileReader = new FileReader(filePath);
             FileReader fileReader = new FileReader(path);
             Scanner fileScanner = new Scanner(fileReader);
 
