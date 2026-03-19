@@ -1,3 +1,10 @@
+//import java.nio.file.FileSystems;
+//import java.nio.file.Path;
+//import java.nio.file.Paths;
+//import java.nio.file.StandardWatchEventKinds;
+//import java.nio.file.WatchEvent;
+//import java.nio.file.WatchKey;
+//import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -44,8 +51,6 @@ public class Faz {
             
             // Met à jour le fichier d'état
             fileStateManager.writeCurrentLot(fileName);
-            
-            listeCaseRepere.clear();
         }
     }
 
@@ -62,5 +67,38 @@ public class Faz {
     public static void main(String[] args) {
         Faz faz = new Faz();
         faz.processFiles();
+
+        // TODO:
+        // Créer un service de surveillance en continue pour traité tous les fichiers à venir
+        // Watch dir 
+        //try {
+        //    WatchService watchService = FileSystems.getDefault().newWatchService();
+        //    Path path = Paths.get(sourcePath);
+        //    path.register(
+        //        watchService,
+        //        StandardWatchEventKinds.ENTRY_CREATE,
+        //        StandardWatchEventKinds.ENTRY_DELETE,
+        //        StandardWatchEventKinds.ENTRY_MODIFY
+        //    );
+        //    System.out.println("Surveillance du dossier : " + path);
+        //
+        //    while (true) {
+        //        WatchKey key = watchService.take(); // bloque jusqu'à un événement
+        //
+        //        for (WatchEvent<?> event : key.pollEvents()) {
+        //            WatchEvent.Kind<?> kind = event.kind();
+        //            Path fileName = (Path) event.context();
+        //            System.out.println("Event : " + kind + " sur " + fileName);
+        //            // processFiles 
+        //            faz.processFiles();
+        //        }
+        //        boolean valid = key.reset();
+        //        if (!valid) {
+        //            break;
+        //        }
+        //    }
+        //} catch (Exception e) {
+        //    e.printStackTrace();
+        //}
     }
 }
