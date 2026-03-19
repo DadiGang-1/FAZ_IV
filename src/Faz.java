@@ -56,7 +56,7 @@ class Faz {
                 for (int i = 0; i < AllFileNames.length; i++) {
                     String uniqueFile = AllFileNames[i];
                     int uniqueNumberFile = Integer.parseInt(uniqueFile.split(".csv")[0]);
-                    if(uniqueNumberFile > currentLot) fileNames.add(uniqueFile);
+                    if(uniqueNumberFile >= currentLot) fileNames.add(uniqueFile);
                 }
             }
         } catch (Exception e) {
@@ -240,7 +240,8 @@ class Faz {
             System.out.println(sourcePath+uncompletFile);
             HashMap<String, CommandeRepereCase> listeCaseRepere = getData(sourcePath+uncompletFile);
             writeFile(listeCaseRepere);
-            writeCurrentFile(uncompletFile);
+            listeCaseRepere.clear();
+            //writeCurrentFile(uncompletFile);
         }
 	}
 }

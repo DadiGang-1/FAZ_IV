@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class CommandeRepereCase extends Faz{
+public class CommandeRepereCase {
     int caseNumber;
     int repereNumber;
     double largeur;
