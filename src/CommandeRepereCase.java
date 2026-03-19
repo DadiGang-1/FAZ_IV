@@ -27,6 +27,15 @@ public class CommandeRepereCase {
     public void setProfil(String profil) {
         this.profil = profil;
     }
+    
+    public int getLot() {
+        return lot;
+    }
+
+    public double getHauteurPoignee() {
+        return hauteurPoignee;
+    }
+    
     public void addDetails(Detail detail) {
         detailsList.add(detail);
     }
