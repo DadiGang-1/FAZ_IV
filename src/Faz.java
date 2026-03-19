@@ -7,16 +7,65 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
 
+import java.io.File;
 class Faz {
 
     private static int lot = 0;
     private static String commande = "";
+    private static String sourcePath = "C:\\Users\\david\\OneDrive - ALU PVC CREATION\\Bureau\\LOT_FAZ_IV\\Source\\";
+    private static String currentFile = "C:\\Users\\david\\OneDrive - ALU PVC CREATION\\Bureau\\LOT_FAZ_IV\\Data\\currentFile.txt";
+    private static int currentLot = 0;
 
-	public static void main(String[] args) {
-
-		Scanner scanner = new Scanner(System.in);
+    public static int getCurrentLot(String currentFile) {
+        int lotFind = 0;
+        File file = new File(currentFile);
+        if (!file.exists()) {
+            String parentDirStr = file.getParent();
+            File parentDir = new File(parentDirStr);
+            if (!parentDir.exists()) {
+                boolean created = parentDir.mkdirs();
+                if (!created) {
+                    System.out.println("The parent directory could not be created");
+                }
+            }
+            
+            try {
+                file.createNewFile();
+                System.out.println("File successfully created!");
+            } catch (IOException ioe) {
+                System.out.println("Unable to create file. " + ioe.getMessage());
+            }
+        } else {
+            try {
+                Scanner fileScanner = new Scanner(new FileReader(currentFile));
+                lotFind = Integer.parseInt(fileScanner.nextLine());
+                fileScanner.close();
+            } catch (Exception e) {
+                System.out.println("Error reading file: "+e.getMessage());
+            }
+        }
+        return lotFind;
+    }
+	public static ArrayList<String> getUncompletFile(File file) {
+        ArrayList<String> fileNames = new ArrayList<>();
+        try {
+            String AllFileNames[] = file.list();
+            if (AllFileNames.length == 0) {
+                System.out.println("The directory is empty!");
+            } else {
+                for (int i = 0; i < AllFileNames.length; i++) {
+                    String uniqueFile = AllFileNames[i];
+                    int uniqueNumberFile = Integer.parseInt(uniqueFile.split(".csv")[0]);
+                    if(uniqueNumberFile > currentLot) fileNames.add(uniqueFile);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error on getting uncomplet file: " + e.getMessage());
+        }
+        return fileNames;
+    }
+    public static HashMap<String, CommandeRepereCase> getData(String path) {
         HashMap<String, CommandeRepereCase> listeCaseRepere = new HashMap<>();
-
         try {
             String profil = "";
             int repere = 0;
@@ -24,8 +73,11 @@ class Faz {
             boolean inRepere = false;
             boolean inProfil = false;
 
-            String path = "C:\\Users\\david\\OneDrive - ALU PVC CREATION\\Bureau\\LOT_FAZ_IV\\Source\\254210.csv";
+            //String path = "C:\\Users\\david\\OneDrive - ALU PVC CREATION\\Bureau\\LOT_FAZ_IV\\Source\\254210.csv";
             String idCRC = "";
+            //System.out.println("Entre file path:");
+            //String filePath = scanner.nextLine();
+            //FileReader fileReader = new FileReader(filePath);
             FileReader fileReader = new FileReader(path);
             Scanner fileScanner = new Scanner(fileReader);
 
@@ -151,28 +203,44 @@ class Faz {
                 }
                 //System.out.println(fileLine);
             }
-
-            // TODO:
-            // Changer par java.nio.file pour créer le fichier .ba2
-
-            try (FileWriter fileWriter = new FileWriter("../test/"+lot+".ba2")) {
-                PrintWriter printWriter = new PrintWriter(fileWriter);
-                for (String cr : listeCaseRepere.keySet()) {
-                    //System.out.println(CommandeRepereCase.generateCAD(listeCaseRepere.get(cr)));
-                    //CommandeRepereCase.toString(listeCaseRepere.get(cr));
-                    printWriter.println(CommandeRepereCase.writeToFile(listeCaseRepere.get(cr)));
-                }
-                printWriter.close();
-            } catch (IOException e) {
-                System.out.println("An error occurred while writing to the file: " + e.getMessage());
-            }
-
             fileScanner.close();
-
         } catch (FileNotFoundException e) {
             System.out.println("File not found: " + e.getMessage());
-        } finally {
-            scanner.close();
+        } catch (Exception e) {
+            System.out.println("Error on data extraction: " + e.getMessage());
+        }
+        return listeCaseRepere;
+    }
+    public static void writeFile(HashMap<String, CommandeRepereCase> listeCaseRepere){
+        try (PrintWriter printWriter = new PrintWriter(new FileWriter("../test/"+lot+".ba2"))) {
+            for (String cr : listeCaseRepere.keySet()) {
+                //System.out.println(CommandeRepereCase.generateCAD(listeCaseRepere.get(cr)));
+                //CommandeRepereCase.toString(listeCaseRepere.get(cr));
+                printWriter.println(CommandeRepereCase.writeToFile(listeCaseRepere.get(cr)));
+            }
+            printWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file: " + e.getMessage());
+        }
+    }
+    public static void writeCurrentFile(String completFile) {
+        try (PrintWriter printWriter = new PrintWriter(new FileWriter(currentFile))) {
+            printWriter.print(completFile.split(".csv")[0]);
+            printWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file: " + e.getMessage());
+        }
+    }
+    public static void main(String[] args) {
+
+        currentLot = getCurrentLot(currentFile);
+        ArrayList<String> fileNames = getUncompletFile(new File(sourcePath));
+
+        for (String uncompletFile : fileNames) {
+            System.out.println(sourcePath+uncompletFile);
+            HashMap<String, CommandeRepereCase> listeCaseRepere = getData(sourcePath+uncompletFile);
+            writeFile(listeCaseRepere);
+            writeCurrentFile(uncompletFile);
         }
 	}
 }
