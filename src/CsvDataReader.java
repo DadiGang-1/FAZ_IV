@@ -151,8 +151,15 @@ public class CsvDataReader {
             Double coupe = Double.parseDouble(fileLine.split(";")[9].replace(",", "."));
             
             // Exception sur la génération des fichiers
-            if (code.equals("222214")) position = 'H';
-            
+            //if (code.equals("222214")) position = 'H';
+
+            if (code.equals("222214") && position != 'H') position = 'H';
+            if (code.equals("222201") && position != 'H') position = 'H';
+            if (code.equals("222203") && position != 'H') position = 'H';
+            if (code.equals("222215") && position != 'B') position = 'B';
+            if (code.equals("222205") && position != 'B') position = 'B';
+            if (code.equals("209303") && position != 'B') position = 'B';
+
             try {
                 Ferrure ferrure = Ferrure.valueOf(codeFerrureEnum);
                 String designation = ferrure.getDesignation();
