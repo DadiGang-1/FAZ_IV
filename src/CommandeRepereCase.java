@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class CommandeRepereCase extends Faz{
+public class CommandeRepereCase {
     int caseNumber;
     int repereNumber;
     double largeur;
@@ -27,6 +27,15 @@ public class CommandeRepereCase extends Faz{
     public void setProfil(String profil) {
         this.profil = profil;
     }
+    
+    public int getLot() {
+        return lot;
+    }
+
+    public double getHauteurPoignee() {
+        return hauteurPoignee;
+    }
+    
     public void addDetails(Detail detail) {
         detailsList.add(detail);
     }
