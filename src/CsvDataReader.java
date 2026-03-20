@@ -163,6 +163,7 @@ public class CsvDataReader {
                 for (Double trouDeVis : ferrure.getTrouDeVis()) {
                     if(ferrure.getType() != TypeFerrure.SERRURE || ferrure.getType() != TypeFerrure.VERROU || ferrure.getType() != TypeFerrure.CREMONE_SOUFFLET) {
                         if(crc.getHauteurPoignee() != 0.0) { // crc.hauteurPoignee
+                            //System.out.println("HauteurPoignée : "+crc.getHauteurPoignee());
                             // TODO:
                             // Gérer les trou de vis en fonction de la hauteur poignee ou en fonction de la dimension du chassis
                         }
